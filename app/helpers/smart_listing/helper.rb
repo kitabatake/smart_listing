@@ -91,7 +91,7 @@ module SmartListing
 
       def sortable title, attribute, options = {}
         dirs = options[:sort_dirs] || @smart_listing.sort_dirs || [nil, "asc", "desc"]
-
+        remote = options[:remote] || true
         next_index = dirs.index(@smart_listing.sort_order(attribute)).nil? ? 0 : (dirs.index(@smart_listing.sort_order(attribute)) + 1) % dirs.length
 
         sort_params = {
@@ -106,7 +106,11 @@ module SmartListing
           :title => title
         }
 
-        @template.render(:partial => 'smart_listing/sortable', :locals => default_locals.merge(locals))
+        @template.render(
+          :partial => 'smart_listing/sortable',
+          :locals => default_locals.merge(locals),
+          :remote => remote
+        )
       end
 
       def update options = {}
